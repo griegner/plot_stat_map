@@ -6,6 +6,6 @@
 <img src='example_fig.png' width='500'>
 
 **to run**:
-- `$ python <path to script>`  
+- `$ python <path to plot_stat_map.py>`  
 - enter lower and upper bound for colormap: `vmin` `vmax`  
 - select stats and background NIFTI files, then name output `directory/file`
