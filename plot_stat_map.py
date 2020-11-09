@@ -1,5 +1,7 @@
 from nilearn import plotting
 from nilearn.plotting import cm
+from nilearn.image import math_img
+from nilearn import datasets
 import tkinter as tk
 from tkinter import filedialog
 import matplotlib as mpl
@@ -45,6 +47,7 @@ def save_img(min_slice, max_slice, bg_img, stats_img, vmin, vmax, slice, output_
                                annotate=False,
                                draw_cross=False)
         img.savefig(f'{output_file}_{slice}={i}.png', dpi=300)
+	img.close()
 
 
 def main():
@@ -54,11 +57,16 @@ def main():
             print('\nset thresholding')
             vmin = abs(float(input('vmin: ')))
             vmax = abs(float(input('vmax: ')))
+            mask = input('mask stats img y/n: ')
             break
         except ValueError:
             print('try again...')
 
     bg_img, stats_img, output_file = browse_file()
+
+    if mask == 'y':
+        brain_mask = datasets.load_mni152_brain_mask()
+        stats_img = math_img('img1 * img2', img1=stats_img, img2=brain_mask)
 
     colorbar(vmin, vmax, output_file)
 
