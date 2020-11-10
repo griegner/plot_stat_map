@@ -47,7 +47,6 @@ def save_img(min_slice, max_slice, bg_img, stats_img, vmin, vmax, slice, output_
                                annotate=False,
                                draw_cross=False)
         img.savefig(f'{output_file}_{slice}={i}.png', dpi=300)
-	img.close()
 
 
 def main():
