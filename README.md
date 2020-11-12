@@ -6,7 +6,8 @@
 <img src='example_fig.png' width='500'>
 
 **to run**:
-- `$ python3 < path to plot_stat_map.py >`  
-- enter lower and upper bound for colormap: `vmin` `vmax`  
-- should activation outside brain (MNI152) be masked: `y/n`
-- select stats and background NIFTI files, then name output `directory/file`
+- `$ python plot_stat_map.py <vmin> <vmax> [<options>]`
+- `vmin` `vmax` lower and upper bound for colormap
+-  `-m, --mask` activation outside brain (mni152) is masked
+-  `-v, --verbose` print progress information to screen
+- select stats and background NIFTI files, then name output directory
