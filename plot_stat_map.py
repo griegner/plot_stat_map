@@ -31,7 +31,8 @@ def browse_file():
     return bg_path, stats_path, output_path
 
 
-def colorbar(vmin, vmax, output_file):
+def colorbar(output_file):
+    vmin, vmax = abs(args.vmin), abs(args.vmax)
     if args.verbose: print(f'colorbar: +/- {vmin} to {vmax}')
     cmap = plotting.cm.cold_hot
     norm = mpl.colors.Normalize(vmin=-vmax, vmax=vmax)
@@ -44,27 +45,28 @@ def colorbar(vmin, vmax, output_file):
     plt.savefig(f'{output_file}_colorbar_{vmin}-{vmax}.png', dpi=300, transparent=True)
 
 
-def save_img(min_slice, max_slice, bg_img, stats_img, vmin, vmax, slice, output_file):
+def save_img(view, min_slice, max_slice, bg_img, stats_img, output_file):
+    vmin, vmax = abs(args.vmin), abs(args.vmax)
 
     for i in range(min_slice, max_slice):
-        if args.verbose: print('slice: %s=%s' % (slice, i))
+        if args.verbose: print('slice: %s=%s' % (view, i))
         img = plotting.plot_stat_map(bg_img=bg_img,
                                stat_map_img=stats_img,
                                threshold=vmin,
                                vmax=vmax,
-                               display_mode=slice,
+                               display_mode=view,
                                cut_coords=[i],
                                colorbar=False,
                                annotate=False,
                                draw_cross=False)
-        img.savefig(f'{output_file}_{slice}={i}.png', dpi=600)
+        img.savefig(f'{output_file}_{view}={i}.png', dpi=600)
         img.close()
 
 
 def main():
     
-    global args = get_args()
-    vmin, vmax = abs(args.vmin), abs(args.vmax)
+    global args 
+    args = get_args()
 
     bg_img, stats_img, output_file = browse_file()
 
@@ -72,11 +74,11 @@ def main():
         brain_mask = datasets.load_mni152_brain_mask()
         stats_img = math_img('img1 * img2', img1=stats_img, img2=brain_mask)
 
-    colorbar(vmin, vmax, output_file)
+    colorbar(output_file)
 
-    save_img(-71, 72, bg_img, stats_img, vmin, vmax, 'x', output_file)
-    save_img(-107, 74, bg_img, stats_img, vmin, vmax, 'y', output_file)
-    save_img(-70, 82, bg_img, stats_img, vmin, vmax, 'z', output_file)
+    save_img('x', -71, 72, bg_img, stats_img, output_file)
+    save_img('y', -107, 74, bg_img, stats_img, output_file)
+    save_img('z', -70, 82, bg_img, stats_img, output_file)
 
 
 main()
